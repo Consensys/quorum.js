@@ -80,8 +80,8 @@ const code = `0x${contract.bytecode}`;
 
       const checkBalance = token => {
         return token.methods
-          .balanceOf(helper.fromAddress)
-          .call({ from: helper.fromAddress })
+          .balanceOf(fromAddress)
+          .call({ from: fromAddress })
           .then(balance => {
             expect(balance).to.eql(totalSupplyQty);
             return token;

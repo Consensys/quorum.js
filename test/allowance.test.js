@@ -117,7 +117,7 @@ const code = `0x${contract.bytecode}`;
           const eventResult = event[0].returnValues;
           expect(eventResult._owner.toLowerCase()).to.equal(fromAddress);
           expect(eventResult._spender.toLowerCase()).to.equal(toAddress);
-          expect(eventResult._value).to.equal(approvedQuantity);
+          expect(eventResult._value).to.eql(approvedQuantity);
           return event;
         });
       };

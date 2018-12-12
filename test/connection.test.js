@@ -22,7 +22,9 @@ const constellationConfig = require("./helpers/constellationConfig");
 
     it("can send raw transaction", () => {
       return enclave
-        .storeRawRequest("cGF5bG9hZAo=", config.fromPublicKey)
+        .storeRawRequest("cGF5bG9hZAo=", testCase.config.fromPublicKey, [
+          testCase.config.toPublicKey
+        ])
         .then(res => {
           return expect(res.key.length).to.be.equal(88);
         });
