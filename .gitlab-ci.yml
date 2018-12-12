@@ -1,0 +1,9 @@
+image: node:8.11.3
+
+stages:
+- build
+
+build:
+  stage: build
+  script:
+    - npm install

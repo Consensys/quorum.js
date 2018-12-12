@@ -1,0 +1,40 @@
+{
+  "globals":{
+    "mocha": true,
+    "chai": true,
+    "expect": true,
+    "assert": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb-base",
+    "plugin:prettier/recommended",
+    "prettier/flowtype"
+  ],
+  "plugins": [
+    "promise",
+    "chai-expect"
+],
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "arrow-body-style": ["error", "always"],
+    "class-methods-use-this": "warn",
+    "no-underscore-dangle": "warn",
+    "chai-expect/missing-assertion": 2,
+    "chai-expect/terminating-properties": 1,
+    "promise/always-return": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "promise/no-nesting": "warn",
+    "promise/no-promise-in-callback": "warn",
+    "promise/no-callback-in-promise": "warn",
+    "promise/avoid-new": "warn",
+    "promise/no-new-statics": "error",
+    "promise/no-return-in-finally": "warn",
+    "promise/valid-params": "warn"
+  }
+}

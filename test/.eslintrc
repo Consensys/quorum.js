@@ -1,0 +1,6 @@
+{
+    "rules": {
+        "no-underscore-dangle": ["error", { "allow": ["_address", "_owner", "_spender", "_value"] }],
+      "no-undef": "off"
+    }
+  }
