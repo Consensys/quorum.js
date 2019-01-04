@@ -91,3 +91,44 @@ It sends a private transaction to the network [ this transaction can be either a
 
 `String` - The 32 Bytes transaction hash as HEX string.
 
+
+### Send raw transactions using external signer via Tessera enclave
+
+If you want to use a different transaction signing mechanism, here are the steps to invoke the relevant APIs separately.
+
+Firstly, a `storeRawRequest` function would need to be called by the enclave:
+
+```js
+
+const web3 = new Web3(new Web3.providers.HttpProvider(address));
+const quorumjs = require("quorum-js");
+
+const tessera = quorumjs.enclaves.Tessera(web3, "http://localhost:8080", "http://localhost:9081");
+
+tessera.storeRawRequest(data, from)
+
+```
+
+##### Parameters
+
+  - `data`: `String` - Either a [byte string](https://github.com/ethereum/wiki/wiki/Solidity,-Docs-and-ABI) 
+    containing the associated data of the message, or in the case of a contract-creation transaction, the initialisation code (bytecode).
+  - `from`: `String` (Optional) - Sender public key
+
+A raw transaction will then need to be formed and signed, please note the data field will need to be replaced with the transaction hash which was returned from the privacy manager (the `key` field of the response data from `storeRawRequest` api call).
+
+
+Secondly, the raw transaction can then be sent to Quorum by `sendRawRequest` function:
+
+```js
+
+var privateFor = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
+
+tessera.sendRawRequest(serializedTransaction, privateFor)
+
+```
+
+##### Parameters
+
+  - `serializedTransaction`: `String` - Signed transaction data in HEX format.
+  - `privateFor`: `List<String>` - When sending a private transaction, an array of the recipients' base64-encoded public keys.
