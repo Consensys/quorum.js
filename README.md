@@ -10,8 +10,8 @@ and the documentation at [Read the Docs](https://web3js.readthedocs.io/en/1.0).
 
 ## Features
 
--   Support for Quorum's private transactions through `constellation`
--   [QuorumChain API](https://github.com/jpmorganchase/quorum/blob/master/docs/api.md#quorumchain-apis) implementation
+-   Support for Quorum's private transactions through private transaction manager
+-   Ability to send **signed** public and private transactions
 -   Works out the box with web3.js' 
     [smart contract wrappers](http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers)
 
