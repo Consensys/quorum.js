@@ -11,7 +11,7 @@ and the documentation at [Read the Docs](https://web3js.readthedocs.io/en/1.0).
 ## Features
 
 -   Support for Quorum's private transactions through private transaction manager
--   Ability to send **signed** public and private transactions
+-   Ability to send **signed** private transactions
 -   Works out the box with web3.js' 
     [smart contract wrappers](http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers)
 
@@ -28,7 +28,7 @@ See instructions as per the [Quorum project page](https://github.com/jpmorgancha
 
 ## Starting Web3 on HTTP
 
-To send asynchronous requests we need to instantiate `web3` with a `HTTP` address that points to the `Quorum`node.
+To send asynchronous requests we need to instantiate `web3` with a `HTTP` address that points to the `Quorum` node.
 
 ```js
       const Web3 = require("web3");
@@ -40,7 +40,7 @@ To send asynchronous requests we need to instantiate `web3` with a `HTTP` addres
 
 ## Enclaves
 
-The library supports connections to private enclaves:
+The library supports connection to Quorum private transaction manager and execution of a raw transaction. Example pseudo code:
 
 ```js
 
@@ -49,21 +49,33 @@ const quorumjs = require("quorum-js");
 
 const tessera = quorumjs.enclaves.Tessera(web3, "http://localhost:8080", "http://localhost:8090");
 const constellation = quorumjs.enclaves.Constellation(web3, "<your ipc path>");
+const enclaveOptions = {
+  /* at least one enclave option must be provided */
+  /* ipcPath is preferred for utilizing older API */
+  ipcPath: "/quorum-examples/examples/7nodes/qdata/c1/tm.ipc",
+  publicUrl: "http://localhost:8080",
+  privateUrl: "http://localhost:8090"
+};
 
-const rawTransactionManager = RawTransactionManager(web3, tessera/constellation);
+const rawTransactionManager = quorumjs.RawTransactionManager(web3, enclaveOptions);
 
-rawTransactionManager.sendRawTransaction({
-        gasPrice: 0,
-        gasLimit: 4300000,
-        to: "",
-        value: 0,
-        data: deploy,
-        from: decryptedAccount,
-        isPrivate: true,
-        privateFrom: TM1_PUBLIC_KEY,
-        privateFor: TM2_PUBLIC_KEY,
-        nonce
-      });
+const txnParams = {
+  gasPrice: 0,
+  gasLimit: 4300000,
+  to: "",
+  value: 0,
+  data: deploy,
+  from: decryptedAccount,
+  privateFrom: TM1_PUBLIC_KEY,
+  privateFor: TM2_PUBLIC_KEY,
+  nonce
+};
+
+// Older API: txn manager and Quorum version agnostic
+rawTransactionManager.sendRawTransactionViaSendAPI(txnParams);
+
+// Newer API: Quorum v2.2.1+ and Tessera
+rawTransactionManager.sendRawTransaction(txnParams);
 ```
 
 It sends a private transaction to the network [ this transaction can be either a contract deployment or a contract call ].
@@ -83,8 +95,8 @@ It sends a private transaction to the network [ this transaction can be either a
     containing the associated data of the message, or in the case of a contract-creation transaction, the initialisation code (bytecode).
     - `decryptedAccount` : `String` - the public key of the sender's account;
     - `nonce`: `Number`  - (optional) Integer of a nonce. This allows to overwrite your own pending transactions that use the same nonce.
-    - `privateFrom`: `String`  - (optional) When sending a private transaction, the sending party's base64-encoded public key to use. If not present *and* passing `privateFor`, use the default key as configured in the `TransactionManager`.
-    - `privateFor`: `List<String>`  - (optional) When sending a private transaction, an array of the recipients' base64-encoded public keys.
+    - `privateFrom`: `String`  - When sending a private transaction, the sending party's base64-encoded public key to use. If not present *and* passing `privateFor`, use the default key as configured in the `TransactionManager`.
+    - `privateFor`: `List<String>`  - When sending a private transaction, an array of the recipients' base64-encoded public keys.
 2. `Function` - (optional) If you pass a callback the HTTP request is made asynchronous.
 
 ##### Returns
@@ -92,7 +104,7 @@ It sends a private transaction to the network [ this transaction can be either a
 `String` - The 32 Bytes transaction hash as HEX string.
 
 
-### Send raw transactions using external signer via Tessera enclave
+### Send raw transactions using external signer. [Only available in Tessera with Quorum v2.2.0+]
 
 If you want to use a different transaction signing mechanism, here are the steps to invoke the relevant APIs separately.
 
@@ -103,9 +115,9 @@ Firstly, a `storeRawRequest` function would need to be called by the enclave:
 const web3 = new Web3(new Web3.providers.HttpProvider(address));
 const quorumjs = require("quorum-js");
 
-const tessera = quorumjs.enclaves.Tessera(web3, "http://localhost:8080", "http://localhost:9081");
+const txnManager = quorumjs.enclaves.GenericEnclave(web3, "", "http://localhost:8080", "http://localhost:9081");
 
-tessera.storeRawRequest(data, from)
+txnManager.storeRawRequest(data, from)
 
 ```
 
@@ -124,7 +136,7 @@ Secondly, the raw transaction can then be sent to Quorum by `sendRawRequest` fun
 
 var privateFor = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
 
-tessera.sendRawRequest(serializedTransaction, privateFor)
+txnManager.sendRawRequest(serializedTransaction, privateFor)
 
 ```
 
@@ -133,6 +145,11 @@ tessera.sendRawRequest(serializedTransaction, privateFor)
   - `serializedTransaction`: `String` - Signed transaction data in HEX format.
   - `privateFor`: `List<String>` - When sending a private transaction, an array of the recipients' base64-encoded public keys.
 
+
+## Examples for using Quorum.js with [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes)
+
+Please see using Constellation and Quorum calls here: https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithConstellation.js
+Please see using Tessera and Quorum calls here: https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithTessera.js
 
 
 ## Getting Help
