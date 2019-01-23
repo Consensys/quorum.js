@@ -47,8 +47,6 @@ The library supports connection to Quorum private transaction manager and execut
 const web3 = new Web3(new Web3.providers.HttpProvider(address));
 const quorumjs = require("quorum-js");
 
-const tessera = quorumjs.enclaves.Tessera(web3, "http://localhost:8080", "http://localhost:8090");
-const constellation = quorumjs.enclaves.Constellation(web3, "<your ipc path>");
 const enclaveOptions = {
   /* at least one enclave option must be provided */
   /* ipcPath is preferred for utilizing older API */
