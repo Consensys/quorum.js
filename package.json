@@ -1,6 +1,6 @@
 {
   "name": "quorum-js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Quorum.js is an extension to web3.js providing support for JP Morgan's Quorum API",
   "license": "Apache-2.0",
   "repository": {
