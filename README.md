@@ -14,6 +14,7 @@ and the documentation at [Read the Docs](https://web3js.readthedocs.io/en/1.0).
 -   Ability to send **signed** private transactions
 -   Works out the box with web3.js' 
     [smart contract wrappers](http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers)
+-   Provides web3 extension for all Quorum specific APIs
 
 ## Installation via NPM
 
@@ -40,7 +41,7 @@ To send asynchronous requests we need to instantiate `web3` with a `HTTP` addres
 
 ## Enclaves
 
-The library supports connection to Quorum private transaction manager and execution of a raw transaction. Example pseudo code:
+The library supports connection to Quorum private transaction manager and execution of a raw transaction. Example **pseudo** code:
 
 ```js
 
@@ -144,10 +145,28 @@ txnManager.sendRawRequest(serializedTransaction, privateFor)
   - `privateFor`: `List<String>` - When sending a private transaction, an array of the recipients' base64-encoded public keys.
 
 
+## Extending web3 instance with Quorum APIs
+Quorum.js offers a way to add Quorum specific APIs to an intance of web3. Current APIs that may be extended are [Raft](https://github.com/jpmorganchase/quorum/blob/master/docs/raft.md), [Istanbul](https://github.com/jpmorganchase/quorum/blob/master/docs/istanbul-rpc-api.md), and [Privacy](https://github.com/jpmorganchase/quorum/blob/master/docs/api.md) APIs. Extending your web3 instance is as simple as calling `quorumjs.extend` with the list of APIs you need. Please note that web3 will receive a quorum specific namespace after extension `web3.quorum`
+
+```js
+
+const web3 = new Web3(new Web3.providers.HttpProvider(address));
+const quorumjs = require("quorum-js");
+
+quorumjs.extend(web3)
+
+```
+
+##### Parameters
+
+  - `web3`: `Object` - web3 instance
+  - `apis`: `String` (Optional) - List of comma separated Quorum APIs to extend web3 instance with. APIs available are raft, istanbul, and eth - default is to add all APIs. Example: `quorumjs.extend(web3, 'raft,eth')`
+
+
+
 ## Examples for using Quorum.js with [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes)
 
-Please see using Constellation and Quorum implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithConstellation.js)
-Please see using Tessera and Quorum implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithTessera.js)
+Please see using Constellation and Quorum implementation private txn [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithConstellation.js) and Tessera implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithTessera.js). An extension sample is also provided.
 
 
 ## Getting Help
