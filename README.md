@@ -146,8 +146,8 @@ txnManager.sendRawRequest(serializedTransaction, privateFor)
 
 ## Examples for using Quorum.js with [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes)
 
-Please see using Constellation and Quorum calls here: https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithConstellation.js
-Please see using Tessera and Quorum calls here: https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithTessera.js
+Please see using Constellation and Quorum implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithConstellation.js)
+Please see using Tessera and Quorum implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractWithTessera.js)
 
 
 ## Getting Help
