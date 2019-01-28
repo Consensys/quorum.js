@@ -6,9 +6,11 @@ const web3 = new Web3(
 
 const quorumjs = require("../lib/index.js");
 
+const accAddress = "ed9d02e382b34818e88b88a309c7fe71e65f419d";
+
 const signAcct = web3.eth.accounts.decrypt(
   {
-    address: "ed9d02e382b34818e88b88a309c7fe71e65f419d",
+    address: accAddress,
     crypto: {
       cipher: "aes-128-ctr",
       ciphertext:
@@ -81,28 +83,32 @@ const rawTransactionManager = quorumjs.RawTransactionManager(web3, {
   privateUrl: "http://localhost:9081"
 });
 
-const newTx = rawTransactionManager.sendRawTransaction({
-  gasPrice: 0,
-  gasLimit: 4300000,
-  to: "",
-  value: 0,
-  data: bytecodeWithInitParam,
-  from: signAcct,
-  isPrivate: true,
-  privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
-  privateFor: ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="],
-  nonce: 8
-});
+web3.eth.getTransactionCount("0x"+accAddress)
+  .then(txCount => {
+    const newTx = rawTransactionManager.sendRawTransaction({
+      gasPrice: 0,
+      gasLimit: 4300000,
+      to: "",
+      value: 0,
+      data: bytecodeWithInitParam,
+      from: signAcct,
+      isPrivate: true,
+      privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
+      privateFor: ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="],
+      nonce: txCount
+    });
 
-newTx
-  .then(tx => {
-    console.log("Contract address: ", tx.contractAddress);
-    const simpleContract2 = new web3.eth.Contract(abi, tx.contractAddress);
-    simpleContract2.methods
-      .get()
-      .call()
-      .then(console.log)
+    newTx
+      .then(tx => {
+        console.log("Contract address: ", tx.contractAddress);
+        const simpleContract2 = new web3.eth.Contract(abi, tx.contractAddress);
+        simpleContract2.methods
+          .get()
+          .call()
+          .then(console.log)
+          .catch(console.log);
+        return simpleContract2;
+      })
       .catch(console.log);
-    return simpleContract2;
-  })
-  .catch(console.log);
+
+  });
