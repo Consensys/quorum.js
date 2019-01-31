@@ -4,8 +4,8 @@ const {
   toAddress
 } = require("./helpers/quorumConfig");
 
-const tesseraConfig = require("./helpers/tesseraConfig");
-const constellationConfig = require("./helpers/constellationConfig");
+const httpConfig = require("./helpers/httpConfig");
+const ipcConfig = require("./helpers/ipcConfig");
 
 const contract = require("./resources/HumanStandardToken.json").contracts[
   "HumanStandardToken.sol:HumanStandardToken"
@@ -14,14 +14,18 @@ const contract = require("./resources/HumanStandardToken.json").contracts[
 const abi = JSON.parse(contract.interface);
 const code = `0x${contract.bytecode}`;
 
+const options = {
+  data: code
+};
+
 [
   {
-    name: "Tessera",
-    config: tesseraConfig
+    name: "Http",
+    config: httpConfig
   },
   {
-    name: "Constellation",
-    config: constellationConfig
+    name: "Ipc",
+    config: ipcConfig
   }
 ].forEach(testCase => {
   describe(testCase.name, () => {
@@ -34,7 +38,7 @@ const code = `0x${contract.bytecode}`;
 
     describe("Human Standard Contract", () => {
       const approvedQuantity = 100;
-      const tokenContract = new web3.eth.Contract(abi, null, code);
+      const tokenContract = new web3.eth.Contract(abi, null, options);
       const contractPayload = tokenContract
         .deploy({
           data: code,
@@ -63,7 +67,7 @@ const code = `0x${contract.bytecode}`;
       };
 
       const loadToken = contractAddress => {
-        return new web3.eth.Contract(abi, contractAddress, code);
+        return new web3.eth.Contract(abi, contractAddress, options);
       };
 
       const checkAllowance = token => {
@@ -71,7 +75,7 @@ const code = `0x${contract.bytecode}`;
           .allowance(fromAddress, toAddress)
           .call({ from: fromAddress })
           .then(initialAllowance => {
-            expect(initialAllowance).to.eql(0);
+            expect(initialAllowance[0]).to.eql(0);
             return token;
           });
       };
@@ -87,7 +91,7 @@ const code = `0x${contract.bytecode}`;
             return rawTransactionManager.sendRawTransaction({
               gasPrice: 0,
               gasLimit: 4300000,
-              to: token._address,
+              to: token.address,
               value: 0,
               data: approveMethodPayload,
               from: decryptedAccount,
@@ -107,19 +111,25 @@ const code = `0x${contract.bytecode}`;
           .allowance(fromAddress, toAddress)
           .call({ from: fromAddress })
           .then(approvedResult => {
-            expect(approvedResult).to.eql(approvedQuantity);
+            expect(approvedResult[0]).to.eql(approvedQuantity);
             return token;
           });
       };
 
       const getApprovedEvents = token => {
-        return token.getPastEvents("Approval").then(event => {
-          const eventResult = event[0].returnValues;
-          expect(eventResult._owner.toLowerCase()).to.equal(fromAddress);
-          expect(eventResult._spender.toLowerCase()).to.equal(toAddress);
-          expect(eventResult._value).to.eql(approvedQuantity);
-          return event;
-        });
+        return token
+          .getPastEvents("Approval", {
+            fromBlock: "0",
+            toBlock: "latest"
+          })
+          .then(event => {
+            console.log(event);
+            const eventResult = event[0].returnValues;
+            expect(eventResult._owner.toLowerCase()).to.equal(fromAddress);
+            expect(eventResult._spender.toLowerCase()).to.equal(toAddress);
+            expect(eventResult._value).to.eql(approvedQuantity);
+            return event;
+          });
       };
 
       it("can approve allowance and fetch events", () => {
