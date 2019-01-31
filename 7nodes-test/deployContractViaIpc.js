@@ -6,7 +6,7 @@ const web3 = new Web3(
 
 const quorumjs = require("../lib/index.js");
 
-const accAddress = "ed9d02e382b34818e88b88a309c7fe71e65f419d";
+const accAddress = "ed9d02e382b34818e88b88a309c7fe71e65f419d"
 
 const signAcct = web3.eth.accounts.decrypt(
   {
@@ -73,9 +73,9 @@ const bytecodeWithInitParam = simpleContract
   .deploy({ data: bytecode, arguments: [42] })
   .encodeABI();
 
-var ipcPath = process.env.IPC_PATH;
+var ipcPath = process.argv.slice(2);
 
-if (ipcPath == null) {
+if (ipcPath.length == 0) {
   console.log('Please specify ipc path')
   process.exit();
 }

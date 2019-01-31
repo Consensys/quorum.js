@@ -83,30 +83,32 @@ const rawTransactionManager = quorumjs.RawTransactionManager(web3, {
   privateUrl: "http://localhost:9081"
 });
 
-web3.eth.getTransactionCount(`0x${accAddress}`).then(txCount => {
-  const newTx = rawTransactionManager.sendRawTransaction({
-    gasPrice: 0,
-    gasLimit: 4300000,
-    to: "",
-    value: 0,
-    data: bytecodeWithInitParam,
-    from: signAcct,
-    isPrivate: true,
-    privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
-    privateFor: ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="],
-    nonce: txCount
-  });
+web3.eth.getTransactionCount("0x"+accAddress)
+  .then(txCount => {
+    const newTx = rawTransactionManager.sendRawTransaction({
+      gasPrice: 0,
+      gasLimit: 4300000,
+      to: "",
+      value: 0,
+      data: bytecodeWithInitParam,
+      from: signAcct,
+      isPrivate: true,
+      privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
+      privateFor: ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="],
+      nonce: txCount
+    });
 
-  newTx
-    .then(tx => {
-      console.log("Contract address: ", tx.contractAddress);
-      const simpleContract2 = new web3.eth.Contract(abi, tx.contractAddress);
-      simpleContract2.methods
-        .get()
-        .call()
-        .then(console.log)
-        .catch(console.log);
-      return simpleContract2;
-    })
-    .catch(console.log);
-});
+    newTx
+      .then(tx => {
+        console.log("Contract address: ", tx.contractAddress);
+        const simpleContract2 = new web3.eth.Contract(abi, tx.contractAddress);
+        simpleContract2.methods
+          .get()
+          .call()
+          .then(console.log)
+          .catch(console.log);
+        return simpleContract2;
+      })
+      .catch(console.log);
+
+  });
