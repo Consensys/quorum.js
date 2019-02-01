@@ -1,33 +1,23 @@
-const tesseraConfig = require("./helpers/tesseraConfig");
-const constellationConfig = require("./helpers/constellationConfig");
+const httpConfig = require("./helpers/httpConfig");
+const ipcConfig = require("./helpers/ipcConfig");
 
 [
   {
-    name: "Tessera",
-    config: tesseraConfig
+    name: "Http",
+    config: httpConfig
   },
   {
-    name: "Constellation",
-    config: constellationConfig
+    name: "Ipc",
+    config: ipcConfig
   }
 ].forEach(testCase => {
   const { enclave } = testCase.config;
 
   describe(testCase.name, () => {
     it("can connect to upcheck", () => {
-      return enclave.upCheck("8080").then(res => {
+      return enclave.upCheck("9001").then(res => {
         return expect(res).to.equal("I'm up!");
       });
-    });
-
-    it("can send raw transaction", () => {
-      return enclave
-        .storeRawRequest("cGF5bG9hZAo=", testCase.config.fromPublicKey, [
-          testCase.config.toPublicKey
-        ])
-        .then(res => {
-          return expect(res.key.length).to.be.equal(88);
-        });
     });
   });
 });

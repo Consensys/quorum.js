@@ -6,9 +6,10 @@ const web3 = new Web3(
 
 const quorumjs = require("../lib/index.js");
 
-// Call extend to add Quorum into web3 instance 
+// Call extend to add Quorum into web3 instance
 quorumjs.extend(web3);
 
-
 // Example of calling Quorum specific API
-web3.quorum.raft.leader().then(function(o,e) { console.log(o, e) });
+web3.quorum.raft.leader().then((o, e) => {
+  console.log(o, e);
+});
