@@ -114,7 +114,10 @@ Firstly, a `storeRawRequest` function would need to be called by the enclave:
 const web3 = new Web3(new Web3.providers.HttpProvider(address));
 const quorumjs = require("quorum-js");
 
-const txnManager = quorumjs.enclaves.GenericEnclave(web3, "", "http://localhost:8080", "http://localhost:9081");
+const txnManager = quorumjs.RawTransactionManager(web3, {
+  publicUrl: "http://localhost:8080",
+  privateUrl: "http://localhost:8090"
+});
 
 txnManager.storeRawRequest(data, from)
 
