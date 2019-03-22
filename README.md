@@ -65,15 +65,18 @@ const txnParams = {
   value: 0,
   data: deploy,
   from: decryptedAccount,
+  isPrivate: true,
   privateFrom: TM1_PUBLIC_KEY,
-  privateFor: TM2_PUBLIC_KEY,
+  privateFor: [TM2_PUBLIC_KEY],
   nonce
 };
 
 // Older API: txn manager and Quorum version agnostic
+// requires the IPC path to be set in enclaveOptions
 rawTransactionManager.sendRawTransactionViaSendAPI(txnParams);
 
 // Newer API: Quorum v2.2.1+ and Tessera
+// requires the private URL to be set in enclaveOptions
 rawTransactionManager.sendRawTransaction(txnParams);
 ```
 
