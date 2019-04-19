@@ -90,10 +90,12 @@ rawTransactionManager
     "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo="
   )
   .then(txHash => {
+    // BEGIN EXTERNAL SIGNING
     // REPLACE this with your preferred method for signing
+    // Keep in mind that for signing private transactions you need to use the Homestead/Frontier signer.
     const rawTransaction = {
-      nonce: `0x${(1).toString(16)}`,
-      from: "ed9d02e382b34818e88b88a309c7fe71e65f419d",
+      nonce: `0x${(0).toString(16)}`,
+      from: accAddress,
       to: "",
       value: `0x${(0).toString(16)}`,
       gasLimit: `0x${(4300000).toString(16)}`,
