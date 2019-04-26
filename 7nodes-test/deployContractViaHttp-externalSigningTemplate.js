@@ -93,30 +93,36 @@ rawTransactionManager
     // BEGIN EXTERNAL SIGNING
     // REPLACE this with your preferred method for signing
     // Keep in mind that for signing private transactions you need to use the Homestead/Frontier signer.
-    const rawTransaction = {
-      nonce: `0x${(0).toString(16)}`,
-      from: accAddress,
-      to: "",
-      value: `0x${(0).toString(16)}`,
-      gasLimit: `0x${(4300000).toString(16)}`,
-      gasPrice: `0x${(0).toString(16)}`,
-      data: `0x${txHash}`
-    };
-    const tx = new EthereumTx(rawTransaction);
-    tx.sign(Buffer.from(signAcct.privateKey.substring(2), "hex"));
 
-    const serializedTx = tx.serialize();
-    const serializedTxHex = `0x${serializedTx.toString("hex")}`;
-    // END EXTERNAL SIGNING
+    web3.eth
+      .getTransactionCount(accAddress)
+      .then(nonce => {
+        const rawTransaction = {
+          nonce: `0x${nonce.toString(16)}`,
+          from: accAddress,
+          to: "",
+          value: `0x${(0).toString(16)}`,
+          gasLimit: `0x${(4300000).toString(16)}`,
+          gasPrice: `0x${(0).toString(16)}`,
+          data: `0x${txHash}`
+        };
+        const tx = new EthereumTx(rawTransaction);
+        tx.sign(Buffer.from(signAcct.privateKey.substring(2), "hex"));
 
-    const privateTx = rawTransactionManager.setPrivate(serializedTxHex);
-    const privateTxHex = `0x${privateTx.toString("hex")}`;
+        const serializedTx = tx.serialize();
+        const serializedTxHex = `0x${serializedTx.toString("hex")}`;
+        // END EXTERNAL SIGNING
 
-    rawTransactionManager
-      .sendRawRequest(privateTxHex, [
-        "ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="
-      ])
-      .then(console.log)
+        const privateTx = rawTransactionManager.setPrivate(serializedTxHex);
+        const privateTxHex = `0x${privateTx.toString("hex")}`;
+
+        return rawTransactionManager
+          .sendRawRequest(privateTxHex, [
+            "ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="
+          ])
+          .then(console.log)
+          .catch(console.log);
+      })
       .catch(console.log);
     return txHash;
   })
