@@ -87,7 +87,7 @@ const options = {
           .balanceOf(fromAddress)
           .call({ from: fromAddress })
           .then(result => {
-            expect(result.balance).to.eql(totalSupplyQty);
+            expect(result).to.eql(totalSupplyQty);
             return token;
           });
       };
@@ -124,7 +124,7 @@ const options = {
           .call({ from: fromAddress })
           .then(result => {
             const remainingQty = totalSupplyQty - transferQty;
-            expect(result.balance).to.eql(remainingQty);
+            expect(result).to.eql(remainingQty);
             return token;
           });
       };
