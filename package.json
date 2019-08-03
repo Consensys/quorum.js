@@ -1,24 +1,22 @@
 {
-  "name": "quorum-xlg-js",
-  "version": "0.1.0",
-  "description": "fork of Quorum.js to support https for raw transactions",
+  "name": "quorum-js",
+  "version": "0.2.0",
+  "description": "Quorum.js is an extension to web3.js providing support for JP Morgan's Quorum API",
   "license": "Apache-2.0",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/osanrju/quorum.js.git"
+    "type" : "git",
+    "url" : "https://github.com/jpmorganchase/quorum.js.git"
   },
   "main": "lib/index.js",
   "directories": {
     "lib": "./lib"
   },
   "author": "JPMorgan Chase",
-  "contributors": [
-    {
-      "name": "SebaRaba",
-      "email": "rabasebastians@gmail.com",
-      "url": "https://github.com/sebaraba"
-    }
-  ],
+  "contributors": [ {
+    "name": "SebaRaba",
+    "email": "rabasebastians@gmail.com",
+    "url": "https://github.com/sebaraba"
+  } ],
   "bugs": {
     "url": "https://github.com/jpmorganchase/quorum.js/issues"
   },
