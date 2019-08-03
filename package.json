@@ -1,5 +1,5 @@
 {
-  "name": "xlg-quorum-xtp-js",
+  "name": "quorum-xlg-js",
   "version": "0.1.0",
   "description": "fork of Quorum.js to support https for raw transactions",
   "license": "Apache-2.0",
