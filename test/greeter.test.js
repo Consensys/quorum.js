@@ -1,7 +1,7 @@
 const { decryptedAccount, fromAddress } = require("./helpers/quorumConfig");
 
-const httpConfig = require("./helpers/httpConfig");
-const ipcConfig = require("./helpers/ipcConfig");
+const tesseraConfig = require("./helpers/tesseraConfig");
+const constellationConfig = require("./helpers/constellationConfig");
 
 const contract = require("./resources/greeter.json").contracts[
   "Greeter.sol:Greeter"
@@ -10,18 +10,14 @@ const contract = require("./resources/greeter.json").contracts[
 const abi = JSON.parse(contract.abi);
 const code = `0x${contract.bin}`;
 
-const options = {
-  data: code
-};
-
 [
   {
-    name: "Http",
-    config: httpConfig
+    name: "Tessera",
+    config: tesseraConfig
   },
   {
-    name: "Ipc",
-    config: ipcConfig
+    name: "Constellation",
+    config: constellationConfig
   }
 ].forEach(testCase => {
   const {
@@ -31,7 +27,7 @@ const options = {
     rawTransactionManager
   } = testCase.config;
 
-  const tokenContract = new web3.eth.Contract(abi, null, options);
+  const tokenContract = new web3.eth.Contract(abi, null, code);
 
   describe(testCase.name, () => {
     describe("Greeter Contract", () => {
@@ -63,7 +59,7 @@ const options = {
       };
 
       const loadToken = contractAddress => {
-        return new web3.eth.Contract(abi, contractAddress, options);
+        return new web3.eth.Contract(abi, contractAddress, code);
       };
 
       const greet = token => {

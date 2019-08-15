@@ -4,8 +4,8 @@ const {
   toAddress
 } = require("./helpers/quorumConfig");
 
-const httpConfig = require("./helpers/httpConfig");
-const ipcConfig = require("./helpers/ipcConfig");
+const tesseraConfig = require("./helpers/tesseraConfig");
+const constellationConfig = require("./helpers/constellationConfig");
 
 const contract = require("./resources/HumanStandardToken.json").contracts[
   "HumanStandardToken.sol:HumanStandardToken"
@@ -14,18 +14,14 @@ const contract = require("./resources/HumanStandardToken.json").contracts[
 const abi = JSON.parse(contract.interface);
 const code = `0x${contract.bytecode}`;
 
-const options = {
-  data: code
-};
-
 [
   {
-    name: "Http",
-    config: httpConfig
+    name: "Tessera",
+    config: tesseraConfig
   },
   {
-    name: "Ipc",
-    config: ipcConfig
+    name: "Constellation",
+    config: constellationConfig
   }
 ].forEach(testCase => {
   describe(testCase.name, () => {
@@ -39,7 +35,7 @@ const options = {
     describe("Human Standard Contract", () => {
       const transferQty = 160;
       const totalSupplyQty = 100000;
-      const tokenContract = new web3.eth.Contract(abi, null, options);
+      const tokenContract = new web3.eth.Contract(abi, null, code);
 
       const contractPayload = tokenContract
         .deploy({
@@ -69,7 +65,7 @@ const options = {
       };
 
       const loadToken = contractAddress => {
-        return new web3.eth.Contract(abi, contractAddress, options);
+        return new web3.eth.Contract(abi, contractAddress, code);
       };
 
       const checkTotalSupply = token => {
@@ -86,8 +82,8 @@ const options = {
         return token.methods
           .balanceOf(fromAddress)
           .call({ from: fromAddress })
-          .then(result => {
-            expect(result).to.eql(totalSupplyQty);
+          .then(balance => {
+            expect(balance).to.eql(totalSupplyQty);
             return token;
           });
       };
@@ -103,7 +99,7 @@ const options = {
             return rawTransactionManager.sendRawTransaction({
               gasPrice: 0,
               gasLimit: 4300000,
-              to: token.address,
+              to: token._address,
               value: 0,
               data: transferAbi,
               from: decryptedAccount,
@@ -122,9 +118,9 @@ const options = {
         return token.methods
           .balanceOf(fromAddress)
           .call({ from: fromAddress })
-          .then(result => {
+          .then(balance => {
             const remainingQty = totalSupplyQty - transferQty;
-            expect(result).to.eql(remainingQty);
+            expect(balance).to.eql(remainingQty);
             return token;
           });
       };
@@ -133,8 +129,8 @@ const options = {
         return token.methods
           .balanceOf(toAddress)
           .call({ from: toAddress })
-          .then(result => {
-            expect(result.balance).to.eql(transferQty);
+          .then(balance => {
+            expect(balance).to.eql(transferQty);
             return token;
           });
       };

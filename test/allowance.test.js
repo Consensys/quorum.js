@@ -4,8 +4,8 @@ const {
   toAddress
 } = require("./helpers/quorumConfig");
 
-const httpConfig = require("./helpers/httpConfig");
-const ipcConfig = require("./helpers/ipcConfig");
+const tesseraConfig = require("./helpers/tesseraConfig");
+const constellationConfig = require("./helpers/constellationConfig");
 
 const contract = require("./resources/HumanStandardToken.json").contracts[
   "HumanStandardToken.sol:HumanStandardToken"
@@ -14,18 +14,14 @@ const contract = require("./resources/HumanStandardToken.json").contracts[
 const abi = JSON.parse(contract.interface);
 const code = `0x${contract.bytecode}`;
 
-const options = {
-  data: code
-};
-
 [
   {
-    name: "Http",
-    config: httpConfig
+    name: "Tessera",
+    config: tesseraConfig
   },
   {
-    name: "Ipc",
-    config: ipcConfig
+    name: "Constellation",
+    config: constellationConfig
   }
 ].forEach(testCase => {
   describe(testCase.name, () => {
@@ -38,7 +34,7 @@ const options = {
 
     describe("Human Standard Contract", () => {
       const approvedQuantity = 100;
-      const tokenContract = new web3.eth.Contract(abi, null, options);
+      const tokenContract = new web3.eth.Contract(abi, null, code);
       const contractPayload = tokenContract
         .deploy({
           data: code,
@@ -67,7 +63,7 @@ const options = {
       };
 
       const loadToken = contractAddress => {
-        return new web3.eth.Contract(abi, contractAddress, options);
+        return new web3.eth.Contract(abi, contractAddress, code);
       };
 
       const checkAllowance = token => {
@@ -75,7 +71,7 @@ const options = {
           .allowance(fromAddress, toAddress)
           .call({ from: fromAddress })
           .then(initialAllowance => {
-            expect(initialAllowance[0]).to.eql(0);
+            expect(initialAllowance).to.eql(0);
             return token;
           });
       };
@@ -91,7 +87,7 @@ const options = {
             return rawTransactionManager.sendRawTransaction({
               gasPrice: 0,
               gasLimit: 4300000,
-              to: token.address,
+              to: token._address,
               value: 0,
               data: approveMethodPayload,
               from: decryptedAccount,
@@ -111,26 +107,20 @@ const options = {
           .allowance(fromAddress, toAddress)
           .call({ from: fromAddress })
           .then(approvedResult => {
-            expect(approvedResult[0]).to.eql(approvedQuantity);
+            expect(approvedResult).to.eql(approvedQuantity);
             return token;
           });
       };
 
-      // const getApprovedEvents = token => {
-      //   return token
-      //     .getPastEvents("Approval", {
-      //       fromBlock: "0",
-      //       toBlock: "latest"
-      //     })
-      //     .then(event => {
-      //       console.log(event);
-      //       const eventResult = event[0].returnValues;
-      //       expect(eventResult._owner.toLowerCase()).to.equal(fromAddress);
-      //       expect(eventResult._spender.toLowerCase()).to.equal(toAddress);
-      //       expect(eventResult._value).to.eql(approvedQuantity);
-      //       return event;
-      //     });
-      // };
+      const getApprovedEvents = token => {
+        return token.getPastEvents("Approval").then(event => {
+          const eventResult = event[0].returnValues;
+          expect(eventResult._owner.toLowerCase()).to.equal(fromAddress);
+          expect(eventResult._spender.toLowerCase()).to.equal(toAddress);
+          expect(eventResult._value).to.eql(approvedQuantity);
+          return event;
+        });
+      };
 
       it("can approve allowance and fetch events", () => {
         return web3.eth
@@ -139,8 +129,8 @@ const options = {
           .then(loadToken)
           .then(checkAllowance)
           .then(approveAllowance)
-          .then(checkApprovedAllowance);
-        // .then(getApprovedEvents);
+          .then(checkApprovedAllowance)
+          .then(getApprovedEvents);
       }).timeout(10000);
     });
   });
