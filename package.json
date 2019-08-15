@@ -1,17 +1,81 @@
 {
-  "name": "quorum-js",
-  "version": "0.3.1",
-  "description": "Quorum.js is an extension to web3.js providing support for JP Morgan's Quorum API",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jpmorganchase/quorum.js.git"
+  "_from": "quorum-js@0.3.0",
+  "_id": "quorum-js@0.3.0",
+  "_inBundle": false,
+  "_integrity": "sha512-TAemXq6g/bi1olr46oeOb3zHiYMqfZlX29AZr3/lDp0lzuspsLNTYZb/6UCTNZi7wnpNcq/iM5OOEqAeo4nTmA==",
+  "_location": "/quorum-js",
+  "_phantomChildren": {
+    "@types/node": "10.14.15",
+    "aes-js": "3.0.0",
+    "any-promise": "1.3.0",
+    "bluebird": "3.5.5",
+    "brorand": "1.1.0",
+    "buffer": "5.4.0",
+    "crypto-browserify": "3.12.0",
+    "debug": "2.6.9",
+    "decompress": "4.2.0",
+    "decompress-response": "3.3.0",
+    "duplexer3": "0.1.4",
+    "eth-ens-namehash": "2.0.8",
+    "eth-lib": "0.1.27",
+    "ethjs-unit": "0.1.6",
+    "fs-promise": "2.0.3",
+    "graceful-fs": "4.2.2",
+    "hmac-drbg": "1.0.1",
+    "http-https": "1.0.0",
+    "inherits": "2.0.4",
+    "is-plain-obj": "1.1.0",
+    "is-retry-allowed": "1.1.0",
+    "is-stream": "1.1.0",
+    "isurl": "1.0.0",
+    "lowercase-keys": "1.0.1",
+    "mime-types": "2.1.24",
+    "minimalistic-assert": "1.0.1",
+    "minimalistic-crypto-utils": "1.0.1",
+    "mkdirp-promise": "5.0.1",
+    "mock-fs": "4.10.1",
+    "nan": "2.14.0",
+    "number-to-bn": "1.7.0",
+    "p-timeout": "1.2.1",
+    "randomhex": "0.1.5",
+    "safe-buffer": "5.2.0",
+    "scrypt-js": "2.0.3",
+    "scrypt.js": "0.2.0",
+    "setimmediate": "1.0.5",
+    "tar.gz": "1.0.7",
+    "timed-out": "4.0.1",
+    "typedarray-to-buffer": "3.1.5",
+    "url-to-options": "1.0.1",
+    "xhr-request-promise": "0.1.2",
+    "xhr2-cookies": "1.1.0",
+    "xmlhttprequest": "1.8.0",
+    "yaeti": "0.0.6"
   },
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "./lib"
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "quorum-js@0.3.0",
+    "name": "quorum-js",
+    "escapedName": "quorum-js",
+    "rawSpec": "0.3.0",
+    "saveSpec": null,
+    "fetchSpec": "0.3.0"
   },
-  "author": "JPMorgan Chase",
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/quorum-js/-/quorum-js-0.3.0.tgz",
+  "_shasum": "7ae9de4f06cf6916d828b487c0a9fec537cd249c",
+  "_spec": "quorum-js@0.3.0",
+  "_where": "D:\\projects\\quorum-examples",
+  "author": {
+    "name": "JPMorgan Chase"
+  },
+  "bugs": {
+    "url": "https://github.com/jpmorganchase/quorum.js/issues"
+  },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "SebaRaba",
@@ -19,43 +83,15 @@
       "url": "https://github.com/sebaraba"
     }
   ],
-  "bugs": {
-    "url": "https://github.com/jpmorganchase/quorum.js/issues"
-  },
-  "homepage": "https://github.com/jpmorganchase/quorum.js#readme",
-  "scripts": {
-    "test": "mocha -r dotenv/config test/**",
-    "lint": "eslint .",
-    "preversion": "npm run lint && npm test",
-    "version": "standard-changelog && git add CHANGELOG.md",
-    "postpublish": "git push origin master --follow-tags"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "keywords": [
-    "web3",
-    "quorum",
-    "tessera",
-    "constelation"
-  ],
   "dependencies": {
     "dotenv": "^6.2.0",
     "ethereumjs-tx": "^1.3.7",
     "request-promise-native": "^1.0.5",
     "rlp": "^2.1.0",
-    "underscore": "^1.9.1",
-    "utf8": "^3.0.0",
-    "web3": "^1.2.0"
+    "web3": "1.0.0-beta.36"
   },
+  "deprecated": false,
+  "description": "Quorum.js is an extension to web3.js providing support for JP Morgan's Quorum API",
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.7.0",
@@ -70,5 +106,41 @@
     "lint-staged": "^7.2.2",
     "mocha": "^5.2.0",
     "prettier": "^1.14.2"
-  }
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "homepage": "https://github.com/jpmorganchase/quorum.js#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "keywords": [
+    "web3",
+    "quorum",
+    "tessera",
+    "constelation"
+  ],
+  "license": "Apache-2.0",
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "main": "lib/index.js",
+  "name": "quorum-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpmorganchase/quorum.js.git"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "postpublish": "git push origin master --follow-tags",
+    "preversion": "npm run lint && npm test",
+    "test": "mocha -r dotenv/config test/**",
+    "version": "standard-changelog && git add CHANGELOG.md"
+  },
+  "version": "0.3.0"
 }
