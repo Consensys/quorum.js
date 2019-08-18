@@ -181,10 +181,10 @@ To send a request to Tessera node with TLS enabled for raw transactions, add the
 ```js
 
 let tlsOptions = {
-        key: fs.readFileSync('cert.key'),
-        clcert: fs.readFileSync('cert.pem'),
-        ca: fs.readFileSync('cert.pem')
-        allowInsecure: true
+        key: fs.readFileSync('./cert.key'),
+        clcert: fs.readFileSync('./cert.pem'),
+        ca: fs.readFileSync('./cert.pem')
+        allowInsecure: false
     }
 
 const rawTransactionManager = quorumjs.RawTransactionManager(web31, {
