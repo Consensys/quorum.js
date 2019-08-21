@@ -174,6 +174,33 @@ quorumjs.extend(web3)
 
 Please see using Constellation and Quorum implementation private txn [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractViaIpc.js) and Tessera implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractViaHttp.js). An extension sample is also provided.
 
+## Example for connecting to Tessera node with TLS enabled
+
+To send a request to Tessera node with TLS enabled for raw transactions, add the cert information as specified below. 
+
+```js
+
+let tlsOptions = {
+        key: fs.readFileSync('./cert.key'),
+        clcert: fs.readFileSync('./cert.pem'),
+        ca: fs.readFileSync('./cert.pem')
+        allowInsecure: false
+    }
+
+const rawTransactionManager = quorumjs.RawTransactionManager(web31, {
+        privateUrl:toPrivateURL,
+        tlsSettings: tlsOptions
+    });
+
+```
+
+##### Parameters
+
+  - `key` : `String` - a byte string with private key of the client
+  - `clcert` : `String` - a byte string with client certificate (signed / unsigned)
+  - `ca` : `String` - (Optional) a byte string with CA certificate
+  - `allowInsecure` : `Boolean` - to accept self signed certificates
+
 
 ## Getting Help
 Stuck at some step? Have no fear, the help is here: <a href="https://clh7rniov2.execute-api.us-east-1.amazonaws.com/Express/" target="_blank" rel="noopener"><img title="Quorum Slack" src="https://clh7rniov2.execute-api.us-east-1.amazonaws.com/Express/badge.svg" alt="Quorum Slack" /></a>
