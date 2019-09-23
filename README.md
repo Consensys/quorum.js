@@ -13,7 +13,7 @@ and the documentation at [Read the Docs](https://web3js.readthedocs.io/en/1.0).
 -   Support for Quorum's private transactions through private transaction manager
 -   Ability to send **signed** private transactions
 -   Works out the box with web3.js' 
-    [smart contract wrappers](http://docs.web3j.io/smart_contracts.html#solidity-smart-contract-wrappers)
+    [smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
 -   Provides web3 extension for all Quorum specific APIs
 
 ## Installation via NPM
