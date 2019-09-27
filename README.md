@@ -49,8 +49,10 @@ const web3 = new Web3(new Web3.providers.HttpProvider(address));
 const quorumjs = require("quorum-js");
 
 const enclaveOptions = {
-  /* at least one enclave option must be provided */
-  /* ipcPath is preferred for utilizing older API */
+  /* at least one enclave option must be provided     */
+  /* ipcPath is preferred for utilizing older API     */
+  /* Constellation only supports ipcPath              */
+  /* For Tessera: privateUrl is ThirdParty server url */
   ipcPath: "/quorum-examples/examples/7nodes/qdata/c1/tm.ipc",
   publicUrl: "http://localhost:8080",
   privateUrl: "http://localhost:8090"
@@ -152,8 +154,9 @@ txnManager.sendRawRequest(serializedTransaction, privateFor)
 
 
 ## Extending web3 instance with Quorum APIs
-Quorum.js offers a way to add Quorum specific APIs to an intance of web3. Current APIs that may be extended are [Raft](https://github.com/jpmorganchase/quorum/blob/master/docs/raft.md), [Istanbul](https://github.com/jpmorganchase/quorum/blob/master/docs/istanbul-rpc-api.md), and [Privacy](https://github.com/jpmorganchase/quorum/blob/master/docs/api.md) APIs. Extending your web3 instance is as simple as calling `quorumjs.extend` with the list of APIs you need. Please note that web3 will receive a quorum specific namespace after extension `web3.quorum`
+Quorum.js offers a way to add Quorum specific APIs to an intance of web3. Current APIs that may be extended are [Raft](http://docs.goquorum.com/en/latest/Consensus/raft/), [Istanbul](http://docs.goquorum.com/en/latest/Consensus/istanbul-rpc-api/), and [Privacy](http://docs.goquorum.com/en/latest/Getting%20Started/api/#privacy-apis) APIs. Extending your web3 instance is as simple as calling `quorumjs.extend` with the list of APIs you need. Please note that web3 will receive a quorum specific namespace after extension `web3.quorum`
 
+**Note:** `web3.eth.subscribe` is extended through `web3.quorum.eth.subscribe` to patch output formatter.
 ```js
 
 const web3 = new Web3(new Web3.providers.HttpProvider(address));
@@ -166,7 +169,7 @@ quorumjs.extend(web3)
 ##### Parameters
 
   - `web3`: `Object` - web3 instance
-  - `apis`: `String` (Optional) - List of comma separated Quorum APIs to extend web3 instance with. APIs available are raft, istanbul, and eth - default is to add all APIs. Example: `quorumjs.extend(web3, 'raft,eth')`
+  - `apis`: `String` (Optional) - List of comma separated Quorum APIs to extend web3 instance with. APIs available are raft, istanbul, and eth - default is to add all APIs. Example: `quorumjs.extend(web3, 'raft, eth')`
 
 
 
