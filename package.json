@@ -1,6 +1,6 @@
 {
   "name": "quorum-js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Quorum.js is an extension to web3.js providing support for JP Morgan's Quorum API",
   "license": "Apache-2.0",
   "repository": {
@@ -49,7 +49,7 @@
   ],
   "dependencies": {
     "dotenv": "^6.2.0",
-    "ethereumjs-tx": "^1.3.7",
+    "ethereumjs-tx": "^2.1.1",
     "request-promise-native": "^1.0.5",
     "rlp": "^2.1.0",
     "underscore": "^1.9.1",

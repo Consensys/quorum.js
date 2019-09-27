@@ -1,5 +1,5 @@
-const Web3 = require("web3");
-const EthereumTx = require("ethereumjs-tx");
+const Web3 = require('web3');
+const EthereumTx = require('ethereumjs-tx').Transaction;
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider("http://localhost:22000")
@@ -92,7 +92,7 @@ rawTransactionManager
   .then(txHash => {
     // BEGIN EXTERNAL SIGNING
     // REPLACE this with your preferred method for signing
-    // Keep in mind that for signing private transactions you need to use the Homestead/Frontier signer.
+    // Keep in mind that for signing *private* transactions you need to use the *Homestead/Frontier* signer.
 
     web3.eth
       .getTransactionCount(accAddress)
@@ -106,7 +106,8 @@ rawTransactionManager
           gasPrice: `0x${(0).toString(16)}`,
           data: `0x${txHash}`
         };
-        const tx = new EthereumTx(rawTransaction);
+
+        const tx = new EthereumTx(rawTransaction, { chain: 'mainnet', hardfork: 'homestead' });
         tx.sign(Buffer.from(signAcct.privateKey.substring(2), "hex"));
 
         const serializedTx = tx.serialize();
