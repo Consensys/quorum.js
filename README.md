@@ -63,7 +63,7 @@ const rawTransactionManager = quorumjs.RawTransactionManager(web3, enclaveOption
 const txnParams = {
   gasPrice: 0,
   gasLimit: 4300000,
-  to: "",
+  to: null,
   value: 0,
   data: deploy,
   from: decryptedAccount,
