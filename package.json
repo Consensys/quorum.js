@@ -45,7 +45,7 @@
     "web3",
     "quorum",
     "tessera",
-    "constelation"
+    "constellation"
   ],
   "dependencies": {
     "dotenv": "^6.2.0",
