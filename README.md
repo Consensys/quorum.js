@@ -10,15 +10,27 @@ quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) wh
     [smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
 -   Provides web3 extension for all Quorum specific APIs
 
-## Installation
+## Requirements
+* [Node.js](https://nodejs.org/en/)
+* [A running Quorum node](https://docs.goquorum.com/en/latest/Getting%20Started/Getting%20Started%20Overview/)
 
+## Installation
 ```shell
 npm install quorum-js
 ```
 
-## Run Quorum
+## Quickstart
+### Extending web3.js
+```js
+const web3 = new Web3(new Web3.providers.HttpProvider(address))
+const quorumjs = require('quorum-js')
 
-See instructions as per the [Quorum project page](https://github.com/jpmorganchase/quorum)
+quorumjs.extend(web3)
+
+web3.quorum.eth.sendRawPrivateTransaction(signedTx, args)
+```
+
+This makes the Quorum-specific API methods available through the `web3.quorum` object. 
 
 ## Start sending requests
 
@@ -146,27 +158,6 @@ txnManager.sendRawRequest(serializedTransaction, privateFor)
 
   - `serializedTransaction`: `String` - Signed transaction data in HEX format.
   - `privateFor`: `List<String>` - When sending a private transaction, an array of the recipients' base64-encoded public keys.
-
-
-## Extending web3 instance with Quorum APIs
-quorum.js offers a way to add Quorum specific APIs to an intance of web3. Current APIs that may be extended are [Raft](http://docs.goquorum.com/en/latest/Consensus/raft/), [Istanbul](http://docs.goquorum.com/en/latest/Consensus/istanbul-rpc-api/), and [Privacy](http://docs.goquorum.com/en/latest/Getting%20Started/api/#privacy-apis) APIs. Extending your web3 instance is as simple as calling `quorumjs.extend` with the list of APIs you need. Please note that web3 will receive a quorum specific namespace after extension `web3.quorum`
-
-**Note:** `web3.eth.subscribe` is extended through `web3.quorum.eth.subscribe` to patch output formatter.
-```js
-
-const web3 = new Web3(new Web3.providers.HttpProvider(address));
-const quorumjs = require("quorum-js");
-
-quorumjs.extend(web3)
-
-```
-
-##### Parameters
-
-  - `web3`: `Object` - web3 instance
-  - `apis`: `String` (Optional) - List of comma separated Quorum APIs to extend web3 instance with. APIs available are raft, istanbul, and eth - default is to add all APIs. Example: `quorumjs.extend(web3, 'raft, eth')`
-
-
 
 ## Examples for using quorum.js with [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes)
 
