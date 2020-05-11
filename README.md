@@ -41,13 +41,7 @@ const quorumjs = require("quorum-js");
 const web3 = new Web3("http://localhost:22000");
 
 const enclaveOptions = {
-  /* at least one enclave option must be provided     */
-  /* ipcPath is preferred for utilizing older API     */
-  /* Constellation only supports ipcPath              */
-  /* For Tessera: privateUrl is ThirdParty server url */
-  ipcPath: "/quorum-examples/examples/7nodes/qdata/c1/tm.ipc",
-  publicUrl: "http://localhost:8080",
-  privateUrl: "http://localhost:8090"
+  privateUrl: "http://localhost:9081" // Tessera ThirdParty server url, use ipcPath if using Constellation
 };
 
 const txnMngr = quorumjs.RawTransactionManager(web3, enclaveOptions);
