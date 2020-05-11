@@ -5,7 +5,7 @@ quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) wh
 ## Features
 
 - Provide js applications with easy access to all Quorum-specific APIs (including private transaction, consensus, and permissioning APIs)  
-- Works with [web3.js smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)/#solidity-smart-contract-wrappers)
+- Works with [web3.js smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
 
 ## Requirements
 * [Node.js](https://nodejs.org/en/)
@@ -30,10 +30,10 @@ quorumjs.extend(web3);
 web3.quorum.eth.sendRawPrivateTransaction(signedTx, args);
 ```
 
-This makes some Quorum-specific API methods available through the `web3.quorum` object. 
+This makes Quorum-specific API methods available through the `web3.quorum` object. 
 
 ### RawTransactionManager object
-Some additional private transaction-specific APIs require access to a [Privacy Manager](https://docs.goquorum.com/en/latest/Privacy/Privacy-Manager/):
+Additional private transaction-specific APIs require access to a [Privacy Manager](https://docs.goquorum.com/en/latest/Privacy/Privacy-Manager/):
 ```js
 const Web3 = require("web3");
 const quorumjs = require("quorum-js");
@@ -51,7 +51,7 @@ txnMngr.sendRawTransaction(args);
 
 ## Documentation
 
-For full usage and API details see the [documentation](https://docs.goquorum.com/en/latest/quorum.js/Overview.md).
+For full usage and API details see the [documentation](https://docs.goquorum.com/en/latest/quorum.js/Overview).
 
 ## Examples
 The [7nodes-test](7nodes-test) directory contains examples of quorum.js usage.  These scripts can be tested with a running [7nodes test network](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes).
