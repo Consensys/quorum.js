@@ -4,11 +4,8 @@ quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) wh
 
 ## Features
 
--   Support for Quorum's private transactions through private transaction manager
--   Ability to send **signed** private transactions
--   Works out the box with web3.js' 
-    [smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
--   Provides web3 extension for all Quorum specific APIs
+- Provide js applications with easy access to all Quorum-specific APIs (including private transaction, consensus, and permissioning APIs)  
+- Works with [web3.js smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)/#solidity-smart-contract-wrappers)
 
 ## Requirements
 * [Node.js](https://nodejs.org/en/)
@@ -33,10 +30,10 @@ quorumjs.extend(web3);
 web3.quorum.eth.sendRawPrivateTransaction(signedTx, args);
 ```
 
-This makes some of the Quorum-specific API methods available through the `web3.quorum` object. 
+This makes some Quorum-specific API methods available through the `web3.quorum` object. 
 
-### Creating RawTransactionManager object
-Some of the Quorum-specific APIs require the configuration of a [Privacy Manager](https://docs.goquorum.com/en/latest/Privacy/Privacy-Manager/):
+### RawTransactionManager object
+Some additional private transaction-specific APIs require access to a [Privacy Manager](https://docs.goquorum.com/en/latest/Privacy/Privacy-Manager/):
 ```js
 const Web3 = require("web3");
 const quorumjs = require("quorum-js");
@@ -60,7 +57,7 @@ txnMngr.sendRawTransaction(args);
 
 ## Documentation
 
-Please read the [documentation](https://docs.goquorum.com/en/latest/quorum.js/Overview.md) for more info, including additional usage options, and a full API list.
+For full usage and API details see the [documentation](https://docs.goquorum.com/en/latest/quorum.js/Overview.md).
 
 ## Examples
 The [7nodes-test](7nodes-test) directory contains examples of quorum.js usage.  These scripts can be tested with a running [7nodes test network](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes).
