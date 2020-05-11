@@ -58,9 +58,8 @@ const txnMngr = quorumjs.RawTransactionManager(web3, enclaveOptions);
 txnMngr.sendRawTransaction(args);
 ``` 
 
-## Examples for using quorum.js with [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes)
-
-Please see using Constellation and Quorum implementation private txn [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractViaIpc.js) and Tessera implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractViaHttp.js). An extension sample is also provided.
+## Examples
+The [7nodes-test](7nodes-test) directory contains examples of quorum.js usage.  These scripts can be tested with a running [7nodes test network](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes).
 
 ## Getting Help
 Stuck at some step? Please join our <a href="https://www.goquorum.com/slack-inviter" target="_blank" rel="noopener">slack community</a> for support.
