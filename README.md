@@ -12,7 +12,7 @@ quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) wh
 
 ## Requirements
 * [Node.js](https://nodejs.org/en/)
-* [A running Quorum node](https://docs.goquorum.com/en/latest/Getting%20Started/Getting%20Started%20Overview/)
+* [Running Quorum & Privacy Manager nodes](https://docs.goquorum.com/en/latest/Getting%20Started/Getting%20Started%20Overview/)
 
 ## Installation
 ```shell
@@ -20,31 +20,43 @@ npm install quorum-js
 ```
 
 ## Quickstart
-### Extending web3.js
+The Quorum-specific API methods provided by quorum.js are accessed in one of two ways: 
+### Extending web3 object
 ```js
-const web3 = new Web3(new Web3.providers.HttpProvider(address))
-const quorumjs = require('quorum-js')
+const Web3 = require("web3");
+const quorumjs = require("quorum-js");
 
-quorumjs.extend(web3)
+const web3 = new Web3("http://localhost:22000");
 
-web3.quorum.eth.sendRawPrivateTransaction(signedTx, args)
+quorumjs.extend(web3);
+
+web3.quorum.eth.sendRawPrivateTransaction(signedTx, args);
 ```
 
-This makes the Quorum-specific API methods available through the `web3.quorum` object. 
+This makes some of the Quorum-specific API methods available through the `web3.quorum` object. 
 
-## Start sending requests
-
-## Starting Web3 on HTTP
-
-To send asynchronous requests we need to instantiate `web3` with a `HTTP` address that points to the `Quorum` node.
-
+### Creating RawTransactionManager object
+Some of the Quorum-specific APIs require the configuration of a [Privacy Manager](https://docs.goquorum.com/en/latest/Privacy/Privacy-Manager/):
 ```js
-      const Web3 = require("web3");
-      const web3 = new Web3(
-        new Web3.providers.HttpProvider("http://localhost:22001")
-      );
-      const account = web3.eth.accounts[0];
-```
+const Web3 = require("web3");
+const quorumjs = require("quorum-js");
+
+const web3 = new Web3("http://localhost:22000");
+
+const enclaveOptions = {
+  /* at least one enclave option must be provided     */
+  /* ipcPath is preferred for utilizing older API     */
+  /* Constellation only supports ipcPath              */
+  /* For Tessera: privateUrl is ThirdParty server url */
+  ipcPath: "/quorum-examples/examples/7nodes/qdata/c1/tm.ipc",
+  publicUrl: "http://localhost:8080",
+  privateUrl: "http://localhost:8090"
+};
+
+const txnMngr = quorumjs.RawTransactionManager(web3, enclaveOptions);
+
+txnMngr.sendRawTransaction(args);
+``` 
 
 ## Enclaves
 
