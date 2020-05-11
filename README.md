@@ -58,6 +58,10 @@ const txnMngr = quorumjs.RawTransactionManager(web3, enclaveOptions);
 txnMngr.sendRawTransaction(args);
 ``` 
 
+## Documentation
+
+Please read the [documentation](https://docs.goquorum.com/en/latest/quorum.js/Overview.md) for more info, including additional usage options, and a full API list.
+
 ## Examples
 The [7nodes-test](7nodes-test) directory contains examples of quorum.js usage.  These scripts can be tested with a running [7nodes test network](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes).
 
