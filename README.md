@@ -10,10 +10,11 @@ quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) wh
     [smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
 -   Provides web3 extension for all Quorum specific APIs
 
-## Installation via NPM
+## Installation
 
-`quorum-js` is available via `npm` package manager. To install it locally use the following command:
-`npm install quorum-js`
+```shell
+npm install quorum-js
+```
 
 ## Run Quorum
 
