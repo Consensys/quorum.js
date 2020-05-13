@@ -1,209 +1,60 @@
-# Quorum.js: JavaScript integration library for Quorum
+# quorum.js: JavaScript API for Quorum
 
-Quorum.js is an extension to [web3.js](https://github.com/ethereum/web3.js/) providing support for
-[JP Morgan's Quorum](https://github.com/jpmorganchase/quorum) API.
-
-Web3.js is the Ethereum compatible `JavaScript API` which implements the Generic JSON RPC spec.
-
-For further information on web3.js, please refer to the [main project page](https://github.com/ethereum/web3.js/)
-and the documentation at [Read the Docs](https://web3js.readthedocs.io/en/1.0).
+quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) which adds support for APIs specific to [Quorum](https://github.com/jpmorganchase/quorum).
 
 ## Features
 
--   Support for Quorum's private transactions through private transaction manager
--   Ability to send **signed** private transactions
--   Works out the box with web3.js' 
-    [smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
--   Provides web3 extension for all Quorum specific APIs
+- Provide js applications with easy access to all Quorum-specific APIs (including private transaction, consensus, and permissioning APIs)  
+- Works with [web3.js smart contract wrappers](https://docs.web3j.io/smart_contracts/#solidity-smart-contract-wrappers)
 
-## Installation via NPM
+## Requirements
+* [Node.js](https://nodejs.org/en/)
+* [Running Quorum & Privacy Manager nodes](https://docs.goquorum.com/en/latest/Getting%20Started/Getting%20Started%20Overview/)
 
-`Quorum-js` is available via `npm` package manager. To install it locally use the following command:
-`npm install quorum-js`
-
-## Run Quorum
-
-See instructions as per the [Quorum project page](https://github.com/jpmorganchase/quorum)
-
-## Start sending requests
-
-## Starting Web3 on HTTP
-
-To send asynchronous requests we need to instantiate `web3` with a `HTTP` address that points to the `Quorum` node.
-
-```js
-      const Web3 = require("web3");
-      const web3 = new Web3(
-        new Web3.providers.HttpProvider("http://localhost:22001")
-      );
-      const account = web3.eth.accounts[0];
+## Installation
+```shell
+npm install quorum-js
 ```
 
-## Enclaves
-
-The library supports connection to Quorum private transaction manager and execution of a raw transaction. Example **pseudo** code:
-
+## Quickstart
+The Quorum-specific API methods provided by quorum.js are accessed in one of two ways: 
+### Extending web3 object
 ```js
-
-const web3 = new Web3(new Web3.providers.HttpProvider(address));
+const Web3 = require("web3");
 const quorumjs = require("quorum-js");
+
+const web3 = new Web3("http://localhost:22000");
+
+quorumjs.extend(web3);
+
+web3.quorum.eth.sendRawPrivateTransaction(signedTx, args);
+```
+
+This makes Quorum-specific API methods available through the `web3.quorum` object. 
+
+### RawTransactionManager object
+Additional private transaction-specific APIs require access to a [Privacy Manager](https://docs.goquorum.com/en/latest/Privacy/Privacy-Manager/):
+```js
+const Web3 = require("web3");
+const quorumjs = require("quorum-js");
+
+const web3 = new Web3("http://localhost:22000");
 
 const enclaveOptions = {
-  /* at least one enclave option must be provided     */
-  /* ipcPath is preferred for utilizing older API     */
-  /* Constellation only supports ipcPath              */
-  /* For Tessera: privateUrl is ThirdParty server url */
-  ipcPath: "/quorum-examples/examples/7nodes/qdata/c1/tm.ipc",
-  publicUrl: "http://localhost:8080",
-  privateUrl: "http://localhost:8090"
+  privateUrl: "http://localhost:9081" // Tessera ThirdParty server url, use ipcPath if using Constellation
 };
 
-const rawTransactionManager = quorumjs.RawTransactionManager(web3, enclaveOptions);
+const txnMngr = quorumjs.RawTransactionManager(web3, enclaveOptions);
 
-const txnParams = {
-  gasPrice: 0,
-  gasLimit: 4300000,
-  to: null,
-  value: 0,
-  data: deploy,
-  from: decryptedAccount,
-  isPrivate: true,
-  privateFrom: TM1_PUBLIC_KEY,
-  privateFor: [TM2_PUBLIC_KEY],
-  nonce
-};
+txnMngr.sendRawTransaction(args);
+``` 
 
-// Older API: txn manager and Quorum version agnostic
-// requires the IPC path to be set in enclaveOptions
-rawTransactionManager.sendRawTransactionViaSendAPI(txnParams);
+## Documentation
 
-// Newer API: Quorum v2.2.1+ and Tessera
-// requires the private URL to be set in enclaveOptions
-rawTransactionManager.sendRawTransaction(txnParams);
-```
+For full usage and API details see the [documentation](https://docs.goquorum.com/en/latest/quorum.js/Overview).
 
-It sends a private transaction to the network [ this transaction can be either a contract deployment or a contract call ].
-
-
-##### Parameters
-
-1. `Object` - The transaction object to send:
-    - <strike>`gasPrice`: `Number` - The price of gas for this transaction, defaults to the mean 
-    network gas price [ because we work in a private network the gasPrice is 0 ].</strike>
-    - `gasLimit`: `Number` - The amount of gas to use for the transaction.
-    - `to`: `String` - (optional) The destination address of the message, left undefined for a contract-creation 
-    transaction [in case of a contract creation the to field must be `null`].
-    - `value`: `Number` - (optional) The value transferred for the transaction, also the 
-    endowment if it's a contract-creation transaction.
-    - `data`: `String` - (optional) Either a [byte string](https://github.com/ethereum/wiki/wiki/Solidity,-Docs-and-ABI) 
-    containing the associated data of the message, or in the case of a contract-creation transaction, the initialisation code (bytecode).
-    - `decryptedAccount` : `String` - the public key of the sender's account;
-    - `nonce`: `Number`  - (optional) Integer of a nonce. This allows to overwrite your own pending transactions that use the same nonce.
-    - `privateFrom`: `String`  - When sending a private transaction, the sending party's base64-encoded public key to use. If not present *and* passing `privateFor`, use the default key as configured in the `TransactionManager`.
-    - `privateFor`: `List<String>`  - When sending a private transaction, an array of the recipients' base64-encoded public keys.
-2. `Function` - (optional) If you pass a callback the HTTP request is made asynchronous.
-
-##### Returns
-
-`String` - The 32 Bytes transaction hash as HEX string.
-
-
-### Send raw transactions using external signer. [Only available in Tessera with Quorum v2.2.0+]
-
-If you want to use a different transaction signing mechanism, here are the steps to invoke the relevant APIs separately.
-
-Firstly, a `storeRawRequest` function would need to be called by the enclave:
-
-```js
-
-const web3 = new Web3(new Web3.providers.HttpProvider(address));
-const quorumjs = require("quorum-js");
-
-const txnManager = quorumjs.RawTransactionManager(web3, {
-  publicUrl: "http://localhost:8080",
-  privateUrl: "http://localhost:8090"
-});
-
-txnManager.storeRawRequest(data, from)
-
-```
-
-##### Parameters
-
-  - `data`: `String` - Either a [byte string](https://github.com/ethereum/wiki/wiki/Solidity,-Docs-and-ABI) 
-    containing the associated data of the message, or in the case of a contract-creation transaction, the initialisation code (bytecode).
-  - `from`: `String` (Optional) - Sender public key
-
-A raw transaction will then need to be formed and signed, please note the data field will need to be replaced with the transaction hash which was returned from the privacy manager (the `key` field of the response data from `storeRawRequest` api call).
-
-
-Secondly, the raw transaction can then be sent to Quorum by `sendRawRequest` function:
-
-```js
-
-var privateFor = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
-
-txnManager.sendRawRequest(serializedTransaction, privateFor)
-
-```
-
-##### Parameters
-
-  - `serializedTransaction`: `String` - Signed transaction data in HEX format.
-  - `privateFor`: `List<String>` - When sending a private transaction, an array of the recipients' base64-encoded public keys.
-
-
-## Extending web3 instance with Quorum APIs
-Quorum.js offers a way to add Quorum specific APIs to an intance of web3. Current APIs that may be extended are [Raft](http://docs.goquorum.com/en/latest/Consensus/raft/), [Istanbul](http://docs.goquorum.com/en/latest/Consensus/istanbul-rpc-api/), and [Privacy](http://docs.goquorum.com/en/latest/Getting%20Started/api/#privacy-apis) APIs. Extending your web3 instance is as simple as calling `quorumjs.extend` with the list of APIs you need. Please note that web3 will receive a quorum specific namespace after extension `web3.quorum`
-
-**Note:** `web3.eth.subscribe` is extended through `web3.quorum.eth.subscribe` to patch output formatter.
-```js
-
-const web3 = new Web3(new Web3.providers.HttpProvider(address));
-const quorumjs = require("quorum-js");
-
-quorumjs.extend(web3)
-
-```
-
-##### Parameters
-
-  - `web3`: `Object` - web3 instance
-  - `apis`: `String` (Optional) - List of comma separated Quorum APIs to extend web3 instance with. APIs available are raft, istanbul, and eth - default is to add all APIs. Example: `quorumjs.extend(web3, 'raft, eth')`
-
-
-
-## Examples for using Quorum.js with [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes)
-
-Please see using Constellation and Quorum implementation private txn [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractViaIpc.js) and Tessera implementation [example](https://github.com/jpmorganchase/quorum.js/blob/master/7nodes-test/deployContractViaHttp.js). An extension sample is also provided.
-
-## Example for connecting to Tessera node with TLS enabled
-
-To send a request to Tessera node with TLS enabled for raw transactions, add the cert information as specified below. 
-
-```js
-
-let tlsOptions = {
-        key: fs.readFileSync('./cert.key'),
-        clcert: fs.readFileSync('./cert.pem'),
-        ca: fs.readFileSync('./cert.pem')
-        allowInsecure: false
-    }
-
-const rawTransactionManager = quorumjs.RawTransactionManager(web31, {
-        privateUrl:toPrivateURL,
-        tlsSettings: tlsOptions
-    });
-
-```
-
-##### Parameters
-
-  - `key` : `String` - a byte string with private key of the client
-  - `clcert` : `String` - a byte string with client certificate (signed / unsigned)
-  - `ca` : `String` - (Optional) a byte string with CA certificate
-  - `allowInsecure` : `Boolean` - to accept self signed certificates
-
+## Examples
+The [7nodes-test](7nodes-test) directory contains examples of quorum.js usage.  These scripts can be tested with a running [7nodes test network](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes).
 
 ## Getting Help
 Stuck at some step? Please join our <a href="https://www.goquorum.com/slack-inviter" target="_blank" rel="noopener">slack community</a> for support.
