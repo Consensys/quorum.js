@@ -97,19 +97,28 @@ web3.eth.getTransactionCount(`0x${accAddress}`).then(txCount => {
     isPrivate: true,
     privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
     privateFor: ["oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8="],
-    nonce: txCount
+    nonce: txCount,
+    privacyFlag: 1
   });
 
-  newTx
+  const res = newTx
     .then(tx => {
       console.log("Contract address: ", tx.contractAddress);
       const simpleContract2 = new web3.eth.Contract(abi, tx.contractAddress);
-      simpleContract2.methods
+      return simpleContract2.methods
         .get()
         .call()
-        .then(console.log)
+        .then(val => {
+          console.log("Value: " + val);
+          return tx
+        })
         .catch(console.log);
-      return simpleContract2;
     })
     .catch(console.log);
+
+  res.then(tx => {
+    console.log("Privacy metadata for address: ", tx.contractAddress);
+    web3.eth.getContractPrivacyMetadata(tx.contractAddress).then(console.log).catch(console.log);
+  })
+  .catch(console.log);
 });
