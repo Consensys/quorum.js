@@ -1,5 +1,5 @@
-const Web3 = require('web3');
-const EthereumTx = require('ethereumjs-tx').Transaction;
+const Web3 = require("web3");
+const EthereumTx = require("ethereumjs-tx").Transaction;
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider("http://localhost:22000")
@@ -16,7 +16,7 @@ const signAcct = web3.eth.accounts.decrypt(
       cipher: "aes-128-ctr",
       ciphertext:
         "4e77046ba3f699e744acb4a89c36a3ea1158a1bd90a076d36675f4c883864377",
-      cipherparams: {iv: "a8932af2a3c0225ee8e872bc0e462c11"},
+      cipherparams: { iv: "a8932af2a3c0225ee8e872bc0e462c11" },
       kdf: "scrypt",
       kdfparams: {
         dklen: 32,
@@ -38,13 +38,13 @@ const abi = [
     constant: true,
     inputs: [],
     name: "storedData",
-    outputs: [{name: "", type: "uint256"}],
+    outputs: [{ name: "", type: "uint256" }],
     payable: false,
     type: "function"
   },
   {
     constant: false,
-    inputs: [{name: "x", type: "uint256"}],
+    inputs: [{ name: "x", type: "uint256" }],
     name: "set",
     outputs: [],
     payable: false,
@@ -54,12 +54,12 @@ const abi = [
     constant: true,
     inputs: [],
     name: "get",
-    outputs: [{name: "retVal", type: "uint256"}],
+    outputs: [{ name: "retVal", type: "uint256" }],
     payable: false,
     type: "function"
   },
   {
-    inputs: [{name: "initVal", type: "uint256"}],
+    inputs: [{ name: "initVal", type: "uint256" }],
     payable: false,
     type: "constructor"
   }
@@ -71,7 +71,7 @@ const bytecode =
 const simpleContract = new web3.eth.Contract(abi);
 
 const bytecodeWithInitParam = simpleContract
-  .deploy({data: bytecode, arguments: [42]})
+  .deploy({ data: bytecode, arguments: [42] })
   .encodeABI();
 
 // const tessera = quorumjs.enclaves.Tessera(
@@ -100,14 +100,16 @@ rawTransactionManager
         const rawTransaction = {
           nonce: `0x${nonce.toString(16)}`,
           from: accAddress,
-          to: "",
           value: `0x${(0).toString(16)}`,
           gasLimit: `0x${(4300000).toString(16)}`,
           gasPrice: `0x${(0).toString(16)}`,
           data: `0x${txHash}`
         };
 
-        const tx = new EthereumTx(rawTransaction, {chain: 'mainnet', hardfork: 'homestead'});
+        const tx = new EthereumTx(rawTransaction, {
+          chain: "mainnet",
+          hardfork: "homestead"
+        });
         tx.sign(Buffer.from(signAcct.privateKey.substring(2), "hex"));
 
         const serializedTx = tx.serialize();
@@ -119,7 +121,7 @@ rawTransactionManager
 
         return rawTransactionManager
           .sendRawRequest(privateTxHex, [
-            "ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="
+            "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="
           ])
           .then(console.log)
           .catch(console.log);

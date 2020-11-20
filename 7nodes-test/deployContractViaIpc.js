@@ -76,7 +76,7 @@ const bytecodeWithInitParam = simpleContract
 const ipcPath = process.env.IPC_PATH;
 
 if (ipcPath == null) {
-  console.log("Please specify ipc path");
+  console.log("Please specify tessera ipc path");
   process.exit();
 }
 
@@ -88,13 +88,12 @@ web3.eth.getTransactionCount(`0x${accAddress}`).then(txCount => {
   const newTx = rawTransactionManager.sendRawTransactionViaSendAPI({
     gasPrice: 0,
     gasLimit: 4300000,
-    to: "",
     value: 0,
     data: bytecodeWithInitParam,
     from: signAcct,
     isPrivate: true,
     privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
-    privateFor: ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="],
+    privateFor: ["QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="],
     nonce: txCount
   });
 
