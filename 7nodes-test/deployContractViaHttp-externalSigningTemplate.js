@@ -100,7 +100,6 @@ rawTransactionManager
         const rawTransaction = {
           nonce: `0x${nonce.toString(16)}`,
           from: accAddress,
-          to: "",
           value: `0x${(0).toString(16)}`,
           gasLimit: `0x${(4300000).toString(16)}`,
           gasPrice: `0x${(0).toString(16)}`,
@@ -119,7 +118,7 @@ rawTransactionManager
 
         return rawTransactionManager
           .sendRawRequest(privateTxHex, [
-            "ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="
+            "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="
           ])
           .then(console.log)
           .catch(console.log);
