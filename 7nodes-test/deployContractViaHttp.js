@@ -90,13 +90,12 @@ web3.eth.getTransactionCount(`0x${accAddress}`).then(txCount => {
   const newTx = rawTransactionManager.sendRawTransaction({
     gasPrice: 0,
     gasLimit: 4300000,
-    to: "",
     value: 0,
     data: bytecodeWithInitParam,
     from: signAcct,
     isPrivate: true,
     privateFrom: "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=",
-    privateFor: ["oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8="],
+    privateFor: ["QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="],
     nonce: txCount
   });
 
