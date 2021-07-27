@@ -2,6 +2,18 @@
 
 quorum.js is an extension for [web3.js](https://github.com/ethereum/web3.js/) which adds support for APIs specific to [Quorum](https://github.com/jpmorganchase/quorum).
 
+## ⚠️ Project Deprecation Notice ⚠️
+
+quorum.js library will be deprecated on December 31st 2021, date from when we will stop supporting the project.
+
+quorum.js library is deprecated and replaced by [web3js-quorum](https://github.com/ConsenSys/web3js-quorum) that offers wider compatibility with the Quorum stack including both Besu and GoQuorum.
+
+From now on, we encourage all users with active projects using quorum.js to migrate to web3js-quorum. Please refer to [migration instructions](https://consensys.github.io/web3js-quorum/latest/tutorial-Migrate%20from%20quorum.js.html).
+
+We will continue to support quorum.js in particular fixing bugs until the end of 2021.
+
+If you have any questions or concerns, please reach out to the ConsenSys protocol engineering team on [#Discord](https://chat.consensys.net) or by [email](mailto:quorum@consensys.net).
+
 ## Features
 
 - Provide js applications with easy access to all Quorum-specific APIs (including private transaction, consensus, and permissioning APIs)  
